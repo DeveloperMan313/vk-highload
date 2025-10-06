@@ -142,14 +142,18 @@
 
 ### Серверы по поддоменам на один ДЦ:
 
+Проведем расчет для одного ДЦ США, т.е. 148M / 3 = 49M пользователей => доля общего RPS = 49M / 430M = 0.11
+
+Умножим RPS из таблицы поддоменов на 0.11 и получим:
+
 | Поддомен | RPS | Серверы | Резерв |
 |----------|-----|---------|--------|
-| `content.quora.com` | 2720 | 10 | 3 |
-| `images.quora.com` | 1271 | 6 | 2 |
-| `search.quora.com` | 313 | 4 | 1 |
-| `static.quora.com` | 313 | 4 | 1 |
-| `auth.quora.com` | 313 | 4 | 1 |
-| `api.quora.com` | 45 | 3 | 1 |
+| `content.quora.com` | 162 | 10 | 3 |
+| `images.quora.com` | 140 | 6 | 2 |
+| `search.quora.com` | 35 | 4 | 1 |
+| `static.quora.com` | 35 | 4 | 1 |
+| `auth.quora.com` | 35 | 4 | 1 |
+| `api.quora.com` | 13 | 3 | 1 |
 
 ## Список используемых источников
 1. https://www.demandsage.com/quora-statistics/

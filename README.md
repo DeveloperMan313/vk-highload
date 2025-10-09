@@ -175,6 +175,10 @@ Ingress поды требуются, т.к. нода K8s может по умо�
 
 ![local balancing](assets/images/local-balancing.drawio.png)
 
+## 5. Логическая схема БД
+
+![DB ER diagram](assets/images/db-er-diagram.png)
+
 ## Список используемых источников
 1. https://www.demandsage.com/quora-statistics/
 2. https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions.html

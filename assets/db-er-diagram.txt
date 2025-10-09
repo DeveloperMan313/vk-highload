@@ -1,0 +1,89 @@
+Table user {
+  user_id integer [pk]
+  username string [unique]
+  email string [unique]
+  password string
+  tag string [unique]
+  profile_description string
+  pfp_url string
+  created_at datetime
+  updated_at datetime
+}
+
+Table session {
+  user_id integer [pk]
+  token string
+  created_at datetime
+  expires_at datetime
+}
+
+Table question {
+  question_id integer [pk]
+  user_id int
+  title string
+  url_title string [unique]
+  contents text
+  created_at datetime
+  updated_at datetime
+}
+
+Table topic {
+  topic_id integer [pk]
+  name string [unique]
+}
+
+Table question_topic {
+  question_id integer
+  topic_id integer
+}
+
+Table answer {
+  answer_id integer [pk]
+  user_id int
+  question_id int
+  contents text
+  created_at datetime
+  updated_at datetime
+}
+
+Table answer_vote {
+  answer_vote_id int [pk]
+  user_id int
+  answer_id int
+  is_positive bool
+  created_at datetime
+}
+
+Table user_sub_user {
+  user_id int
+  subbed_to_user_id int
+}
+
+Table user_sub_topic {
+  user_id int
+  topic_id int
+}
+
+Ref: user.user_id < session.user_id
+
+Ref: user.user_id < question.user_id
+
+Ref: user.user_id < answer.user_id
+
+Ref: user.user_id < answer_vote.user_id
+
+Ref: user.user_id < user_sub_user.user_id
+
+Ref: user.user_id < user_sub_user.subbed_to_user_id
+
+Ref: user.user_id < user_sub_topic.user_id
+
+Ref: question.question_id < question_topic.question_id
+
+Ref: topic.topic_id < question_topic.topic_id
+
+Ref: topic.topic_id < user_sub_topic.topic_id
+
+Ref: question.question_id < answer.question_id
+
+Ref: answer.answer_id < answer_vote.answer_id

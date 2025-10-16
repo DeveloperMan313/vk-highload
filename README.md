@@ -382,17 +382,21 @@ Ingress поды требуются, т.к. нода K8s может по умо�
 
 ### Шардирование и резервирование СУБД
 
+**Расчет количества шардов:**
+
+Количество шардов рассчитано для одного ДЦ США.
+
 | Таблица | Стратегия шардинга | Ключ шардинга | Количество шардов | Репликация |
 |---------|-------------------|---------------|-------------------|------------|
-| **user** | Range-based | user_id | 100 | Master-Slave (3 реплики) |
-| **session** | Hash-based | user_id | 50 | Redis Cluster (авто-репликация) |
-| **question** | Range-based | question_id | 50 | Master-Slave (3 реплики) |
+| **user** | Range-based | user_id | 15 | Master-Slave (3 реплики) |
+| **session** | Hash-based | user_id | 10 | Redis Cluster (авто-репликация) |
+| **question** | Range-based | question_id | 10 | Master-Slave (3 реплики) |
 | **topic** | No sharding | - | 1 | Master-Slave (3 реплики) |
-| **question_topic** | Composite | question_id | 50 | Master-Slave (3 реплики) |
-| **answer** | Range-based | answer_id | 100 | Master-Slave (3 реплики) |
-| **answer_vote** | Hash-based | answer_id | 200 | Cassandra (RF=3) |
-| **user_sub_user** | Hash-based | user_id | 50 | Neo4j Causal Cluster |
-| **user_sub_topic** | Hash-based | user_id | 50 | Neo4j Causal Cluster |
+| **question_topic** | Composite | question_id | 10 | Master-Slave (3 реплики) |
+| **answer** | Range-based | answer_id | 15 | Master-Slave (3 реплики) |
+| **answer_vote** | Hash-based | answer_id | 25 | Cassandra (RF=3) |
+| **user_sub_user** | Hash-based | user_id | 10 | Neo4j Causal Cluster |
+| **user_sub_topic** | Hash-based | user_id | 10 | Neo4j Causal Cluster |
 
 ### Клиентские библиотеки / интеграции
 

@@ -388,13 +388,13 @@ Ingress поды требуются, т.к. нода K8s может по умо�
 
 | Таблица | Стратегия шардинга | Ключ шардинга | Количество шардов | Репликация |
 |---------|--------------------|---------------|-------------------|------------|
-| **user** | Geo + Hash | geo_region, hash(user_id) | 16 | Master-Slave (3 реплики) |
-| **session** | Geo + Hash | geo_region, hash(user_id) | 16 | Redis Cluster (авто-репликация) |
-| **question** | Composite Hash | hash(topic_id + created_month) | 4 | Master-Slave (3 реплики) |
+| **user** | Hash | hash(user_id) | 16 | Master-Slave (3 реплики) |
+| **session** | Hash | hash(user_id) | 16 | Redis Cluster (авто-репликация) |
+| **question** | Composite Hash | hash(question_id + topic_id) | 4 | Master-Slave (3 реплики) |
 | **topic** | No sharding | - | 1 | Master-Slave (3 реплики) |
 | **question_topic** | Composite Hash | hash(question_id + topic_id) | 4 | Master-Slave (3 реплики) |
-| **answer** | Composite Hash | hash(question_id + created_at.hour) | 16 | Master-Slave (3 реплики) |
-| **answer_vote** | Composite Hash | hash(answer_id + created_at.hour) | 8 | Cassandra (RF=3) |
+| **answer** | Composite Hash | hash(user_id + question_id) | 16 | Master-Slave (3 реплики) |
+| **answer_vote** | Composite Hash | hash(user_id + answer_id) | 8 | Cassandra (RF=3) |
 | **user_sub_user** | Composite Hash | hash(user_id + subbed_to_user_id) | 16 | Neo4j Causal Cluster |
 | **user_sub_topic** | Composite Hash | hash(user_id + topic_id) | 16 | Neo4j Causal Cluster |
 

@@ -527,6 +527,10 @@ Ingress поды требуются, т.к. нода K8s может по умо�
 | **Хранилище данных** | Ежедневные бэкапы в S3, версионность, гео-репликация |
 | **Сеть** | Multiple ISP, DDoS защита |
 
+## 10. Схема проекта
+
+![full diagram](assets/images/full-diagram.drawio.png)
+
 ## Список используемых источников
 1. https://www.demandsage.com/quora-statistics/
 2. https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions.html

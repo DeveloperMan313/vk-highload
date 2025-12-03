@@ -186,40 +186,40 @@ Ingress поды требуются, т.к. нода K8s может по умо�
 | Поле | Тип данных | Размер (байт) | Описание |
 |------|------------|---------------|----------|
 | user_id | INTEGER | 4 | PK |
-| username | TEXT | 255 | Unique |
-| email | TEXT | 255 | Unique |
-| password | TEXT | 255 | Хэш пароля |
-| tag | TEXT | 100 | Unique |
-| profile_description | TEXT | 2000 | Описание профиля |
-| pfp_url | TEXT | 1000 | URL аватара |
+| username | TEXT | 64 | Unique |
+| email | TEXT | 256 | Unique |
+| password | TEXT | 256 | Хэш пароля |
+| tag | TEXT | 128 | Unique |
+| profile_description | TEXT | 512 | Описание профиля |
+| pfp_url | TEXT | 256 | URL аватара |
 | created_at | TIMESTAMP | 8 | |
 | updated_at | TIMESTAMP | 8 | |
-| **Итого на строку** | | **~3885** | |
+| **Итого на строку** | | **~1492** | |
 
-**Всего строк:** 430M × **~1.67 TB**
+**Всего строк:** 430M × **~642 GB**
 
 ### Таблица `question`
 | Поле | Тип данных | Размер (байт) | Описание |
 |------|------------|---------------|----------|
 | question_id | INTEGER | 4 | PK |
 | user_id | INTEGER | 4 | FK |
-| title | TEXT | 255 | |
-| url_title | TEXT | 255 | Unique |
-| contents | TEXT | 2000 | |
+| title | TEXT | 256 | |
+| url_title | TEXT | 256 | Unique |
+| contents | TEXT | 2048 | |
 | created_at | TIMESTAMP | 8 | |
 | updated_at | TIMESTAMP | 8 | |
-| **Итого на строку** | | **~2534** | |
+| **Итого на строку** | | **~2584** | |
 
-**Всего строк:** 40.9M × **~103.7 GB**
+**Всего строк:** 40.9M × **~105.7 GB**
 
 ### Таблица `topic`
 | Поле | Тип данных | Размер (байт) | Описание |
 |------|------------|---------------|----------|
 | topic_id | INTEGER | 4 | PK |
-| name | TEXT | 255 | Unique |
-| **Итого на строку** | | **~259** | |
+| name | TEXT | 256 | Unique |
+| **Итого на строку** | | **~260** | |
 
-**Всего строк:** 300K × **~77.7 MB**
+**Всего строк:** 300K × **~78 MB**
 
 ### Таблица `question_topic`
 | Поле | Тип данных | Размер (байт) | Описание |
@@ -236,12 +236,12 @@ Ingress поды требуются, т.к. нода K8s может по умо�
 | answer_id | INTEGER | 4 | PK |
 | user_id | INTEGER | 4 | FK |
 | question_id | INTEGER | 4 | FK |
-| contents | TEXT | 2000 | |
+| contents | TEXT | 2048 | |
 | created_at | TIMESTAMP | 8 | |
 | updated_at | TIMESTAMP | 8 | |
-| **Итого на строку** | | **~2028** | |
+| **Итого на строку** | | **~2076** | |
 
-**Всего строк:** 204.5M × **~414.7 GB**
+**Всего строк:** 204.5M × **~424.5 GB**
 
 ### Таблица `answer_vote`
 | Поле | Тип данных | Размер (байт) | Описание |
@@ -305,34 +305,29 @@ Ingress поды требуются, т.к. нода K8s может по умо�
 
 ### Индексы
 
-| Таблица | Индекс | Тип | Поля | Назначение |
-|---------|--------|-----|------|------------|
-| **user** | PK | Primary | user_id | Основной ключ |
-| **user** | UX_username | Unique | username | Поиск по имени пользователя |
-| **user** | UX_email | Unique | email | Авторизация |
-| **user** | UX_tag | Unique | tag | Поиск по тегу |
-| **user** | IX_created_at | B-tree | created_at | Аналитика новых пользователей |
-| **question** | PK | Primary | question_id | Основной ключ |
-| **question** | IX_user_id | B-tree | user_id | Поиск вопросов пользователя |
-| **question** | UX_url_title | Unique | url_title | SEO-friendly URL |
-| **question** | IX_created_at | B-tree | created_at | Сортировка по дате |
-| **question** | FTS_title_contents | Full-text | title, contents | Поиск по тексту |
-| **topic** | PK | Primary | topic_id | Основной ключ |
-| **topic** | UX_name | Unique | name | Поиск по названию темы |
-| **question_topic** | PK | Composite | question_id, topic_id | Основной ключ |
-| **question_topic** | IX_topic_id | B-tree | topic_id | Поиск вопросов по теме |
-| **answer** | PK | Primary | answer_id | Основной ключ |
-| **answer** | IX_user_id | B-tree | user_id | Ответы пользователя |
-| **answer** | IX_question_id | B-tree | question_id | Ответы на вопрос |
-| **answer** | IX_created_at | B-tree | created_at | Сортировка по дате |
-| **answer** | FTS_contents | Full-text | contents | Поиск по тексту ответов |
-| **answer_vote** | PK | Primary | answer_vote_id | Основной ключ |
-| **answer_vote** | UX_user_answer | Unique | user_id, answer_id | Один голос на пользователя |
-| **answer_vote** | IX_answer_id | B-tree | answer_id | Подсчет голосов |
-| **user_sub_user** | PK | Composite | user_id, subbed_to_user_id | Основной ключ |
-| **user_sub_user** | IX_subbed_to_user_id | B-tree | subbed_to_user_id | Подписчики пользователя |
-| **user_sub_topic** | PK | Composite | user_id, topic_id | Основной ключ |
-| **user_sub_topic** | IX_topic_id | B-tree | topic_id | Подписчики темы |
+| Таблица | Индекс | Поля | Назначение |
+|---------|--------|------|------------|
+| **user** | PK | user_id | Основной ключ |
+| **user** | UX_username | username | Поиск по имени пользователя |
+| **user** | UX_email | email | Авторизация |
+| **user** | UX_tag | tag | Поиск по тегу |
+| **question** | PK | question_id | Основной ключ |
+| **question** | IX_user_id | user_id | Поиск вопросов пользователя |
+| **question** | UX_url_title | url_title | SEO-friendly URL |
+| **question** | IX_created_at | created_at | Сортировка по дате |
+| **topic** | PK | topic_id | Основной ключ |
+| **question_topic** | PK | question_id, topic_id | Основной ключ |
+| **answer** | PK | answer_id | Основной ключ |
+| **answer** | IX_user_id | user_id | Ответы пользователя |
+| **answer** | IX_question_id | question_id | Ответы на вопрос |
+| **answer** | IX_created_at | created_at | Сортировка по дате |
+| **answer_vote** | PK | answer_vote_id | Основной ключ |
+| **answer_vote** | UX_user_answer | user_id, answer_id | Один голос на пользователя |
+| **answer_vote** | IX_answer_id | answer_id | Подсчет голосов |
+| **user_sub_user** | PK | user_id, subbed_to_user_id | Основной ключ |
+| **user_sub_user** | IX_subbed_to_user_id | subbed_to_user_id | Подписчики пользователя |
+| **user_sub_topic** | PK | user_id, topic_id | Основной ключ |
+| **user_sub_topic** | IX_topic_id | topic_id | Подписчики темы |
 
 ### Денормализация
 
@@ -370,7 +365,7 @@ Neo4j не шардируется, т.к. граф сильно связан и 
 
 | Таблица | Стратегия шардинга | Ключ шардинга | Количество шардов | Репликация |
 |---------|--------------------|---------------|-------------------|------------|
-| **user** | Hash | hash(user_id) | 8 | Master-Slave (2 реплики) |
+| **user** | Hash | hash(user_id) | 4 | Master-Slave (2 реплики) |
 | **question** | No sharding | - | - | Master-Slave (2 реплики) |
 | **topic** | No sharding | - | - | Master-Slave (2 реплики) |
 | **question_topic** | No sharding | - | - | Master-Slave (2 реплики) |
